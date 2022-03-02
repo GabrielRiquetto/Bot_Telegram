@@ -16,24 +16,6 @@ def responder(msg):
     else:
         bot.reply_to(msg, "Vou pesquisar e já retorno. Isso pode demorar um pouco...")
         resposta = searchProduct(mensagem)
-        tamanho = len(resposta)
-        mensagem = "Essas foram as informações que eu consegui, espero ajudar em algo:\n\n"
-        c = 0
-        while True:
-            if tamanho == 0:
-                mensagem = "Ocorreu um erro e não consegui obter nenhum resultado, desculpe..."
-                break
-            else:
-                try:
-                    mensagem += f"Produto: {resposta[c]['produto']}\n"
-                    mensagem += f"Avaliação: {resposta[c]['avaliacao']}\n"
-                    mensagem += f"Valor: {resposta[c]['valor']}\n"
-                    mensagem += f"Vendedor: {resposta[c]['vendedor']}\n"
-                    mensagem += f"Link: {resposta[c]['link']}\n"
-                    mensagem += "_"*48+"\n"
-                    c+=1
-                except:
-                    break
         bot.send_message(msg.chat.id, mensagem)
 
 @bot.message_handler(commands=["top30"])
