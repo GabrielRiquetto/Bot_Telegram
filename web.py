@@ -4,7 +4,7 @@ import re
 
 def searchProduct(product):
     c = 0
-    url = f'https://www.google.com/search?q={product}&tbm=shop'
+    url = f'https://www.google.com.br/search?q={product}&tbm=shop'
 
     site = requests.get(url)
     soup = BeautifulSoup(site.content, 'html.parser')
@@ -32,7 +32,7 @@ def searchProduct(product):
                 link = "Não consegui consultar o link"
             temp_dict["link"] = link
             try:
-                avaliacao = re.search('(?=aria-label=").+(?=stars)', str(result1)).group()
+                avaliacao = re.search('(?=aria-label=").+(?=estrelas)', str(result1)).group()
                 avaliacao = avaliacao.replace('aria-label="', "") + "estrelas"
             except:
                 avaliacao = "Não consegui consultar a avaliação"
