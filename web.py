@@ -56,23 +56,5 @@ def searchProduct(product):
             c+=1
         except:
             break
-
-    tamanho = len(lista_final)
-    mensagem = "Essas foram as informações que eu consegui:\n\n"
-    c = 0
-    while True:
-        if tamanho == 0:
-            mensagem = "Ocorreu um erro e não consegui obter nenhum resultado, desculpe..."
-            break
-        else:
-            try:
-                mensagem += f"Produto: {lista_final[c]['produto']}\n"
-                mensagem += f"Avaliação: {lista_final[c]['avaliacao']}\n"
-                mensagem += f"Valor: {lista_final[c]['valor']}\n"
-                mensagem += f"Vendedor: {lista_final[c]['vendedor']}\n"
-                mensagem += f"Link: {lista_final[c]['link']}\n"
-                mensagem += "_"*48+"\n"
-                c+=1
-            except:
-                break
-    return mensagem    
+        
+    return lista_final    
