@@ -1,7 +1,6 @@
 import telebot
 import re
 from BeautSoup import searchTop30
-from random import randint
 from web import *
 apiKey = "5184551074:AAG5MjlyPGGueIfRNjBlQUvVMoRe63j-Jnk"
 
@@ -27,28 +26,7 @@ def responder(msg):
 def responder(msg):
     bot.reply_to(msg, "Riquetto te mandou um abraço de volta!")
 
-@bot.message_handler(commands=["casada"])
-def responder(msg):
-    num = randint(0, 1000)
-    if num < 250:
-        bot.reply_to(msg, f"Ta fraquinho(a) hoje em {msg.from_user.first_name}, comeu {num}")
-    elif num < 750:
-        bot.reply_to(msg, f"Ta na média hoje em {msg.from_user.first_name}, comeu {num}")
-    else:
-        bot.reply_to(msg, f"KOROI {msg.from_user.first_name.upper()} TA COMEDOR DE CASADAS HOJE HEIN, COMEU {num}")
-
 #Precisa de DEF
-def isGay(msg):
-    if "gay" in msg.text.lower():
-        return True
-    else:
-        return False
-
-@bot.message_handler(func=isGay)
-def responder(msg):
-    bot.reply_to(msg, "GAY É O TEU PAI SEU CORNO.")
-
-
 def isDate(msg):
     if re.search("(?=(\d{2}\/\d{2}\/\d{4}))", msg.text):
         return True
