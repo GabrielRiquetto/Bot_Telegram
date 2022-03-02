@@ -16,7 +16,7 @@ def responder(msg):
     else:
         bot.reply_to(msg, "Vou pesquisar e já retorno. Isso pode demorar um pouco...")
         resposta = searchProduct(mensagem)
-        bot.send_message(msg.chat.id, mensagem)
+        bot.send_message(msg.chat.id, resposta)
 
 @bot.message_handler(commands=["top30"])
 def responder(msg):

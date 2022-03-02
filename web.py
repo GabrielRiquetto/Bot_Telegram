@@ -11,6 +11,7 @@ def searchProduct(product):
     results = soup.find_all("div", class_="P8xhZc")
     lista_final = []
     while c < 1:
+        temp_dict = {}
         try:
             result1 = results[c]
             resultStr = str(results[2].get_text())
@@ -31,7 +32,7 @@ def searchProduct(product):
                 link = "Não consegui consultar o link"
             temp_dict["link"] = link
             try:
-                avaliacao = re.search('(?=aria-label=").+(?=estrelas)', str(result1)).group()
+                avaliacao = re.search('(?=aria-label=").+(?=stars)', str(result1)).group()
                 avaliacao = avaliacao.replace('aria-label="', "") + "estrelas"
             except:
                 avaliacao = "Não consegui consultar a avaliação"
