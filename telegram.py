@@ -2,7 +2,7 @@ import telebot
 import re
 from BeautSoup import searchTop30
 from random import randint
-from web import searchProduct
+from web import *
 apiKey = "5184551074:AAG5MjlyPGGueIfRNjBlQUvVMoRe63j-Jnk"
 
 bot = telebot.TeleBot(apiKey)
@@ -14,8 +14,9 @@ def responder(msg):
     if mensagem.strip() == "":
         bot.reply_to(msg, "Você precisa digitar o nome de um produto para eu pesquisar!")
     else:
-        bot.reply_to(msg, "Vou pesquisar e já retorno. Isso pode demorar um pouco...")
-        resposta = searchProduct(mensagem)
+        bot.reply_to(msg, "Por enquanto eu só pesquiso no site da Kabum, então há chances do seu item não ser encontrado!\nVou pesquisar e já retorno. Isso pode demorar um pouco...")
+        lista = search_product_kabum(msg.text.replace("/pesquisar", "").rstrip().lstrip())
+        resposta = retorna_mensagem(lista)
         bot.send_message(msg.chat.id, resposta)
 
 @bot.message_handler(commands=["top30"])
@@ -66,10 +67,9 @@ def verify(msg):
 
 @bot.message_handler(func=verify)
 def responder(msg):
-    texto = """Seja bem vindo(a). Clique em uma das opções a seguir:
+    texto = f"""Seja bem vindo(a) {msg.from_user.first_name}. Clique em uma das opções a seguir:
 /top30 - Buscar pelo top 30 hltv
 /abraco - Mandar um abraçao para o Riquetto
-/casada - Quantas casadas você comeu hoje?
 /pesquisar - Caso queira pesquisar por preços de um produto específico, basta digitar "/pesquisar produto"
 Caso queira pesquisar direto o TOP 30, você pode simplesmente digitar a data.
 Qualquer outra opção, não irá funcionar!"""
