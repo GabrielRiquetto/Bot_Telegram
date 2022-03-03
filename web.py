@@ -5,7 +5,6 @@ import re
 def search_product_kabum(product):
     c = 0
     product = product.replace(" ", "+")
-    print(product)
     url = f'https://www.kabum.com.br/busca?query={product}'
 
     site = requests.get(url)
