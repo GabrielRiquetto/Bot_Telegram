@@ -24,35 +24,33 @@ def search_product_kabum(product):
                 break
         i = 0
         for chave, valor in links.items():
-            try:
-                while True: 
-                    info_dict = {}
-                    info_dict['link'] = valor
-                    site = requests.get(valor)
-                    soup = BeautifulSoup(site.content, 'html.parser')
-                    info_dict['nome'] = soup.find("h1", itemprop="name").get_text()    
+            while True: 
+                info_dict = {}
+                info_dict['link'] = valor
+                site = requests.get(valor)
+                soup = BeautifulSoup(site.content, 'html.parser')
 
-                    old_price = soup.find("span", class_="oldPrice")
-                    if old_price != None:
-                        info_dict["old price"] = old_price.get_text()
-                    
-                    avista = soup.find("h4", "finalPrice")
-                    if avista != None:
-                        info_dict['avista'] = avista.get_text()
-                    
-                    price = soup.find("b", "regularPrice")
-                    if price != None:
-                        info_dict['regular price'] = price.get_text()
-                    else:
-                        try:    
-                            info_dict['regular price'] = avista.get_text()
-                        except AttributeError:
-                            info_dict['regular price'] = "Não há estoque desse produto!"
-                    all_itens[i] = info_dict
-                    i+=1
-                    break
-            except:
-                return [{"Kabum": 'Ocorreu algum erro e não consegui pesquisar nada'}]
+                info_dict['nome'] = soup.find("h1", itemprop="name").get_text()    
+
+                old_price = soup.find("span", class_="oldPrice")
+                if old_price != None:
+                    info_dict["old price"] = old_price.get_text()
+                
+                avista = soup.find("h4", "finalPrice")
+                if avista != None:
+                    info_dict['avista'] = avista.get_text()
+                
+                price = soup.find("b", "regularPrice")
+                if price != None:
+                    info_dict['regular price'] = price.get_text()
+                else:
+                    try:    
+                        info_dict['regular price'] = avista.get_text()
+                    except AttributeError:
+                        info_dict['regular price'] = "Não há estoque desse produto!"
+                all_itens[i] = info_dict
+                i+=1
+                break
         return [{"Kabum": all_itens}]
     elif site.status_code != 200:
         return [{"Kabum":"O site da Kabum está com algum problema."}]
@@ -158,6 +156,8 @@ def retorna_mensagem(lista):
     return mensagem
 
 def call(product):
+    product = product.replace("/pesquisar", "").rstrip().lstrip()
+    print(product)
     kabum = search_product_kabum(product)
     amazon = search_product_amazon(kabum, product)
     mensagem = retorna_mensagem(amazon)
