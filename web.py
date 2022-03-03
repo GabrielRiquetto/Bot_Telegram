@@ -81,7 +81,7 @@ def retorna_mensagem(lista):
                         if value['regular price'] != "Não há estoque desse produto!":
                             mensagem += f"Preço: {value['regular price']}\n\n"
                         else:
-                            mensagem += f"{value['regular price']} por isso este produto não há preço\n\n"
+                            mensagem += f"{value['regular price']}\n\n"
                     except KeyError:
                         mensagem += "Não consegui pegar o preço do produto\n\n"
                     try:
