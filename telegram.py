@@ -13,7 +13,7 @@ def responder(msg):
     if mensagem.strip() == "":
         bot.reply_to(msg, "Você precisa digitar o nome de um produto para eu pesquisar!")
     else:
-        bot.reply_to(msg, "Por enquanto eu só pesquiso no site da Kabum, então há chances do seu item não ser encontrado!\nVou pesquisar e já retorno. Isso pode demorar um pouco...")
+        bot.reply_to(msg, "Por enquanto eu só pesquiso nos sites da Kabum e da Amazon, então há chances do seu item não ser encontrado!\nVou pesquisar e já retorno. Isso pode demorar um pouco...")
         lista = search_product_kabum(msg.text.replace("/pesquisar", "").rstrip().lstrip())
         resposta = retorna_mensagem(lista)
         bot.send_message(msg.chat.id, resposta)
