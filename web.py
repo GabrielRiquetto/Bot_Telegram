@@ -83,8 +83,8 @@ def search_product_amazon(lista, product):
             comeco_link = formated.find('href="')
             final_link = formated[comeco_link:].find('"><')
             comeco = formated[comeco_link:]
-            dict_temp['link'] = comeco[:final_link].replace('href="', "")
-
+            completed = comeco[:final_link].replace('href="', "")
+            dict_temp['link'] = f"amazon.com.br{completed}"    
             estrelas = texto.find("estrelas")
 
             cifrao = texto.find("R$")
@@ -143,7 +143,7 @@ def retorna_mensagem(lista):
                     except KeyError:
                         mensagem += "Não consegui pegar o preço do produto\n\n"
                     try:
-                        mensagem += f"Parcelas: {value['parcela']}"
+                        mensagem += f"Parcelas: {value['parcela']}\n\n"
                     except:
                         pass
                     try:
