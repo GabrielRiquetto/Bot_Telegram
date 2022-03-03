@@ -57,6 +57,61 @@ def search_product_kabum(product):
         return [{"Kabum":"O site da Kabum está com algum problema."}]
     else:
         return [{"Kabum":"Não consegui encontrar nada na Kabum =("}]
+
+def search_product_amazon(lista, product):
+    product = product.replace(" ", "+")
+    i = 2
+    count = 0
+    error = 0
+    dict_append = {}
+    url = f'https://www.amazon.com.br/s?k={product}'
+    while True:
+        site = requests.get(url)
+        soup = BeautifulSoup(site.content, 'html.parser')
+        informations = soup.find_all("div", class_="a-spacing-small")
+        if informations != []:
+            break
+        elif error > 10 and site.status_code != 200:
+            return lista.append({"Amazon": "O site da Amazon está com algum problema..."})
+        error += 1
+
+    while count < 3:
+        if "R$" in informations[i].get_text():
+            dict_temp = {}
+            texto = str(informations[i].get_text())
+
+            formated = str(informations[i])
+            comeco_link = formated.find('href="')
+            final_link = formated[comeco_link:].find('"><')
+            comeco = formated[comeco_link:]
+            completed = comeco[:final_link].replace('href="', "")
+            dict_temp['link'] = f"amazon.com.br{completed}"    
+            estrelas = texto.find("estrelas")
+
+            cifrao = texto.find("R$")
+            virgula = texto[cifrao:].find(",")
+            comeco_preco = texto[cifrao:]
+            dict_temp['regular price'] = comeco_preco[:virgula+3]
+            try:
+                parcela_comeco = texto.find("em até")
+                if parcela_comeco != -1:
+                    parcela_final = texto[parcela_comeco:].find("juros")
+                    primeiro = texto[parcela_comeco:]
+                    dict_temp['parcela'] = primeiro[:parcela_final+5].rstrip().lstrip()
+            except:
+                pass
+            dict_temp['nome'] = texto[:estrelas-10].rstrip().lstrip()
+            avaliacao = texto[estrelas-10: cifrao].rstrip().lstrip()
+            if "Economize" in avaliacao:
+                economize = avaliacao.find("Economize")
+                dict_temp['avaliacao'] = f"{avaliacao[:economize].rstrip().lstrip()} avaliações"
+            else:
+                dict_temp['avaliacao'] = f"{avaliacao} avaliações"
+            dict_append[count] = dict_temp
+            count+=1
+        i+=1
+    lista.append({"Amazon":dict_append})
+    return lista
     
 def retorna_mensagem(lista):
     mensagem = "Essas foram as informações que eu obtive:\n\n"
@@ -69,6 +124,10 @@ def retorna_mensagem(lista):
                         mensagem += f"Produto: {value['nome']}\n\n"
                     except KeyError:
                         mensagem += f"Produto: Não consegui obter o nome do produto =(\n\n"
+                    try:
+                        mensagem += f"Avaliação: {value['avaliacao']}\n\n"
+                    except:
+                        pass
                     try:
                         mensagem += f"Preço antigo: {value['old price']}\n\n"
                     except KeyError:
@@ -84,6 +143,10 @@ def retorna_mensagem(lista):
                             mensagem += f"{value['regular price']}\n\n"
                     except KeyError:
                         mensagem += "Não consegui pegar o preço do produto\n\n"
+                    try:
+                        mensagem += f"Parcela: {value['parcela']}\n\n"
+                    except:
+                        pass
                     try:
                         mensagem += f"Caso tenha te interessado, aqui está o link:\n{value['link']}\n"
                     except KeyError:

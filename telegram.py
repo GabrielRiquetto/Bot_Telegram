@@ -14,8 +14,10 @@ def responder(msg):
         bot.reply_to(msg, "Você precisa digitar o nome de um produto para eu pesquisar!")
     else:
         bot.reply_to(msg, "Por enquanto eu só pesquiso no site da Kabum, então há chances do seu item não ser encontrado!\nVou pesquisar e já retorno. Isso pode demorar um pouco...")
-        lista = search_product_kabum(msg.text.replace("/pesquisar", "").rstrip().lstrip())
-        resposta = retorna_mensagem(lista)
+        mensagem = msg.text.replace("/pesquisar", "").rstrip().lstrip()
+        listaK = search_product_kabum(mensagem)
+        listaKA = search_product_amazon(lista=listaK, product=mensagem)
+        resposta = retorna_mensagem(listaKA)
         bot.send_message(msg.chat.id, resposta)
 
 @bot.message_handler(commands=["top30"])
