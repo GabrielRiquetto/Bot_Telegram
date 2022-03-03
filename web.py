@@ -45,7 +45,10 @@ def search_product_kabum(product):
                 if price != None:
                     info_dict['regular price'] = price.get_text()
                 else:
-                    info_dict['regular price'] = avista.get_text()
+                    try:    
+                        info_dict['regular price'] = avista.get_text()
+                    except AttributeError:
+                        info_dict['regular price'] = "Não há estoque desse produto!"
                 all_itens[i] = info_dict
                 i+=1
                 break
@@ -75,7 +78,10 @@ def retorna_mensagem(lista):
                     except KeyError:
                         pass
                     try:
-                        mensagem += f"Preço: {value['regular price']}\n\n"
+                        if value['regular price'] != "Não há estoque desse produto!":
+                            mensagem += f"Preço: {value['regular price']}\n\n"
+                        else:
+                            mensagem += f"{value['regular price']} por isso este produto não há preço\n\n"
                     except KeyError:
                         mensagem += "Não consegui pegar o preço do produto\n\n"
                     try:
