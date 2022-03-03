@@ -157,6 +157,9 @@ def retorna_mensagem(lista):
 
 def call(product):
     kabum = search_product_kabum(product)
+    print(kabum)
     amazon = search_product_amazon(kabum, product)
+    print(amazon)
     mensagem = retorna_mensagem(amazon)
+    print(mensagem)
     return mensagem
