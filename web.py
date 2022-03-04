@@ -61,7 +61,7 @@ def search_product_kabum(product):
 def search_product_amazon(lista, product):
     lista = lista
     product = product.replace(" ", "+")
-    i = 2
+    i = 0
     count = 0
     error = 0
     dict_append = {}
