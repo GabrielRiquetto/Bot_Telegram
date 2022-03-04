@@ -54,9 +54,9 @@ def search_product_kabum(product):
                 break
         return [{"Kabum": all_itens}]
     elif site.status_code != 200:
-        return [{"Kabum":"O site da Kabum está com algum problema."}]
+        return [{"Kabum":"O site da Kabum está com algum problema.\n\n"}]
     else:
-        return [{"Kabum":"Não consegui encontrar nada na Kabum =("}]
+        return [{"Kabum":"Não consegui encontrar nada na Kabum =(\n\n"}]
 
 def search_product_amazon(lista, product):
     lista = lista
@@ -70,9 +70,10 @@ def search_product_amazon(lista, product):
         site = requests.get(url)
         soup = BeautifulSoup(site.content, 'html.parser')
         informations = soup.find_all("div", class_="a-spacing-small")
+        print(informations)
         if informations != []:
             break
-        elif error > 10 and site.status_code != 200:
+        elif error > 45 and site.status_code != 200:
             return lista.append({"Amazon": "O site da Amazon está com algum problema..."})
         error += 1
 
