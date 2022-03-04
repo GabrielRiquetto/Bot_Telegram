@@ -16,7 +16,9 @@ def responder(msg):
         bot.reply_to(msg, "Por enquanto eu só pesquiso no site da Kabum, então há chances do seu item não ser encontrado!\nVou pesquisar e já retorno. Isso pode demorar um pouco...")
         mensagem = msg.text.replace("/pesquisar", "").rstrip().lstrip()
         listaK = search_product_kabum(mensagem)
+        print(listaK)
         listaKA = search_product_amazon(lista=listaK, product=mensagem)
+        print(listaKA)
         resposta = retorna_mensagem(listaKA)
         bot.send_message(msg.chat.id, resposta)
 
