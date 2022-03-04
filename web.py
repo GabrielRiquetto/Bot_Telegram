@@ -73,47 +73,50 @@ def search_product_amazon(lista, product):
         print(informations)
         if informations != []:
             break
-        elif error > 45 and site.status_code != 200:
+        elif error > 500 and site.status_code != 200:
             return lista.append({"Amazon": "O site da Amazon está com algum problema..."})
         error += 1
+    if informations !=[]:
+        while count < 3:
+            if "R$" in informations[i].get_text():
+                dict_temp = {}
+                texto = str(informations[i].get_text())
 
-    while count < 3:
-        if "R$" in informations[i].get_text():
-            dict_temp = {}
-            texto = str(informations[i].get_text())
+                formated = str(informations[i])
+                comeco_link = formated.find('href="')
+                final_link = formated[comeco_link:].find('"><')
+                comeco = formated[comeco_link:]
+                completed = comeco[:final_link].replace('href="', "")
+                dict_temp['link'] = f"amazon.com.br{completed}"    
+                estrelas = texto.find("estrelas")
 
-            formated = str(informations[i])
-            comeco_link = formated.find('href="')
-            final_link = formated[comeco_link:].find('"><')
-            comeco = formated[comeco_link:]
-            completed = comeco[:final_link].replace('href="', "")
-            dict_temp['link'] = f"amazon.com.br{completed}"    
-            estrelas = texto.find("estrelas")
-
-            cifrao = texto.find("R$")
-            virgula = texto[cifrao:].find(",")
-            comeco_preco = texto[cifrao:]
-            dict_temp['regular price'] = comeco_preco[:virgula+3]
-            try:
-                parcela_comeco = texto.find("em até")
-                if parcela_comeco != -1:
-                    parcela_final = texto[parcela_comeco:].find("juros")
-                    primeiro = texto[parcela_comeco:]
-                    dict_temp['parcela'] = primeiro[:parcela_final+5].rstrip().lstrip()
-            except:
-                pass
-            dict_temp['nome'] = texto[:estrelas-10].rstrip().lstrip()
-            avaliacao = texto[estrelas-10: cifrao].rstrip().lstrip()
-            if "Economize" in avaliacao:
-                economize = avaliacao.find("Economize")
-                dict_temp['avaliacao'] = f"{avaliacao[:economize].rstrip().lstrip()} avaliações"
-            else:
-                dict_temp['avaliacao'] = f"{avaliacao} avaliações"
-            dict_append[count] = dict_temp
-            count+=1
-        i+=1
-    lista.append({"Amazon":dict_append})
-    return lista
+                cifrao = texto.find("R$")
+                virgula = texto[cifrao:].find(",")
+                comeco_preco = texto[cifrao:]
+                dict_temp['regular price'] = comeco_preco[:virgula+3]
+                try:
+                    parcela_comeco = texto.find("em até")
+                    if parcela_comeco != -1:
+                        parcela_final = texto[parcela_comeco:].find("juros")
+                        primeiro = texto[parcela_comeco:]
+                        dict_temp['parcela'] = primeiro[:parcela_final+5].rstrip().lstrip()
+                except:
+                    pass
+                dict_temp['nome'] = texto[:estrelas-10].rstrip().lstrip()
+                avaliacao = texto[estrelas-10: cifrao].rstrip().lstrip()
+                if "Economize" in avaliacao:
+                    economize = avaliacao.find("Economize")
+                    dict_temp['avaliacao'] = f"{avaliacao[:economize].rstrip().lstrip()} avaliações"
+                else:
+                    dict_temp['avaliacao'] = f"{avaliacao} avaliações"
+                dict_append[count] = dict_temp
+                count+=1
+            i+=1
+        lista.append({"Amazon":dict_append})
+        return lista
+    else:
+        lista.append({"Amazon":"Amazon está com algum problema..."})
+        return lista
     
 def retorna_mensagem(lista):
     mensagem = "Essas foram as informações que eu obtive:\n\n"
