@@ -59,6 +59,7 @@ def search_product_kabum(product):
         return [{"Kabum":"Não consegui encontrar nada na Kabum =("}]
 
 def search_product_amazon(lista, product):
+    lista = lista
     product = product.replace(" ", "+")
     i = 2
     count = 0
