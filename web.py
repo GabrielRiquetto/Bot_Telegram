@@ -70,7 +70,6 @@ def search_product_amazon(lista, product):
         site = requests.get(url)
         soup = BeautifulSoup(site.content, 'html.parser')
         informations = soup.find_all("div", class_="a-spacing-small")
-        print(informations)
         if informations != []:
             break
         elif error > 500 and site.status_code != 200:
