@@ -30,8 +30,10 @@ def search_product_kabum(product):
                 info_dict['link'] = valor
                 site = requests.get(valor)
                 soup = BeautifulSoup(site.content, 'html.parser')
-
-                info_dict['nome'] = soup.find("h1", itemprop="name").get_text()    
+                
+                name = soup.find("h1", itemprop="name")    
+                if name != None:
+                    info_dict['nome'] = name.get_text()
 
                 old_price = soup.find("span", class_="oldPrice")
                 if old_price != None:
