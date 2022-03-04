@@ -72,10 +72,6 @@ def search_product_amazon(lista, product):
         informations = soup.find_all("div", class_="a-spacing-small")
         if informations != []:
             break
-        elif error > 20 and site.status_code != 200:
-            return lista.append({"Amazon": "O site da Amazon está com algum problema..."})
-        error += 1
-        sleep(1.5)
     if informations !=[]:
         while count < 3:
             if "R$" in informations[i].get_text():
