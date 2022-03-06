@@ -6,7 +6,6 @@ from funcsGetInformations import *
 def search_product_kabum(product):
     c = 0
     product = product.replace(" ", "+")
-    print(product)
     url = f'https://www.kabum.com.br/busca?query={product}'
 
     site = requests.get(url)
@@ -193,7 +192,7 @@ def return_message(lista):
                         mensagem += f"Não consegui pegar o link, desculpe!\n"
                     mensagem += "_" * 50 + "\n"
             except:
-                mensagem += f"{valor}"
+                mensagem += f"{valor}\n"
     return mensagem
 
 
