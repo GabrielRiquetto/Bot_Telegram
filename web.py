@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from funcsGetInformations import *
+from Classes import Pichau
 
 def search_product_kabum(product):
     c = 0
@@ -122,33 +122,6 @@ def search_product_amazon(lista, product):
         lista.append({"Amazon":"Ocorreu algum problema comigo!"})
         return lista
 
-def search_product_pichau(lista, product):
-    lista = lista
-    dict_all = {}
-    product = product.replace(" ", "-")
-    url = f"https://www.pichau.com.br/search?q={product}"
-    site = requests.get(url)
-    soup = BeautifulSoup(site.content, 'html.parser')
-    erro = soup.find("p", class_="MuiTypography-h6")
-    if site.status_code != 200:
-        lista.append({"Pichau":"Pichau está com algum problema..."})
-        return lista
-    elif erro:
-        erro = erro.get_text()
-        lista.append({"Pichau":erro})
-        return lista
-    else:
-        c = 2
-        while c < 5:
-            dict_temp = {}
-            get_link_pichau(soup, c, dict_temp)
-            get_name_pichau(soup, c, dict_temp)
-            get_price_pichau(soup, c, dict_temp)
-            dict_all[c] = dict_temp
-            c+=1
-        lista.append({"Pichau":dict_all})
-        return lista
-
 def return_message(lista):
     mensagem = "Essas foram as informações que eu obtive:\n"
     for index in lista:
@@ -199,6 +172,6 @@ def return_message(lista):
 def main(product):
     listaK = search_product_kabum(product)
     listaKA = search_product_amazon(listaK, product)
-    listaKAP = search_product_pichau(listaKA, product)
+    listaKAP = Pichau(listaKA, product).search_product_pichau()
     message = return_message(listaKAP)
     return message

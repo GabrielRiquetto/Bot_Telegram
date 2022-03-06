@@ -1,7 +1,8 @@
 import telebot
 import re
-from BeautSoup import searchTop30
+from searchTop30 import searchTop30
 from web import *
+
 apiKey = "5184551074:AAG5MjlyPGGueIfRNjBlQUvVMoRe63j-Jnk"
 
 bot = telebot.TeleBot(apiKey)
