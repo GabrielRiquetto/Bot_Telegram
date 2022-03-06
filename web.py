@@ -74,7 +74,7 @@ def search_product_amazon(lista, product):
         informations = soup.find_all("div", class_="a-spacing-small")
         if informations != []:
             break
-        elif erro == 10:
+        elif erro == 250:
             break
         erro += 1
     if informations !=[]:
