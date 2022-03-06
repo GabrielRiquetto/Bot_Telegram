@@ -129,7 +129,7 @@ def retorna_mensagem(lista):
     for index in lista:
         for loja, valor in index.items():
             try:
-                mensagem += f"Loja: {loja}\n"
+                mensagem += f"\n\nLoja: {loja}\n"
                 for chave, value in valor.items():
                     try:
                         mensagem += f"Produto: {value['nome']}\n\n"
