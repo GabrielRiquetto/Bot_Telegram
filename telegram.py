@@ -13,15 +13,11 @@ def responder(msg):
     if mensagem.strip() == "":
         bot.reply_to(msg, "Você precisa digitar o nome de um produto para eu pesquisar!")
     else:
-        bot.reply_to(msg, "Por enquanto eu só pesquiso nos sites da Kabum, então há chances do seu item não ser encontrado!\n\n")
+        bot.reply_to(msg, "Por enquanto eu só pesquiso nos sites da Kabum, Amazon e Pichau, então há chances do seu item não ser encontrado!\n\n")
         bot.send_message(msg.chat.id, "Vou pesquisar e já retorno. Isso pode demorar um pouco...")
-        
         mensagem = msg.text.replace("/pesquisar", "").rstrip().lstrip()
-        listaK = search_product_kabum(mensagem)
-        listaKA = search_product_amazon(listaK, mensagem)
-        resposta = retorna_mensagem(listaKA)
+        resposta = main(mensagem)
         bot.send_message(msg.chat.id, resposta)
-        bot.send_message(msg.chat.id, "Eu tento buscar 5 vezes, se alguma loja deu problema foi por não ter aceito a minha pesquisa, desculpe!")
 
 @bot.message_handler(commands=["top30"])
 def responder(msg):

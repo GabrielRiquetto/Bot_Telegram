@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from time import sleep
+from funcsGetInformations import *
+
 def search_product_kabum(product):
     c = 0
     product = product.replace(" ", "+")
@@ -68,15 +69,13 @@ def search_product_amazon(lista, product):
     count = 0
     dict_append = {}
     url = f'https://www.amazon.com.br/s?k={product}'
-    print(url)
     while True:
         site = requests.get(url)
         soup = BeautifulSoup(site.content, 'html.parser')
         informations = soup.find_all("div", class_="a-spacing-small")
-        print(site.status_code)
         if informations != []:
             break
-        elif erro == 5:
+        elif erro == 10:
             break
         erro += 1
     if informations !=[]:
@@ -124,12 +123,39 @@ def search_product_amazon(lista, product):
         lista.append({"Amazon":"Ocorreu algum problema comigo!"})
         return lista
 
-def retorna_mensagem(lista):
-    mensagem = "Essas foram as informações que eu obtive:\n\n"
+def search_product_pichau(lista, product):
+    lista = lista
+    dict_all = {}
+    product = product.replace(" ", "-")
+    url = f"https://www.pichau.com.br/search?q={product}"
+    site = requests.get(url)
+    soup = BeautifulSoup(site.content, 'html.parser')
+    erro = soup.find("p", class_="MuiTypography-h6")
+    if site.status_code != 200:
+        lista.append({"Pichau":"Pichau está com algum problema..."})
+        return lista
+    elif erro:
+        erro = erro.get_text()
+        lista.append({"Pichau":erro})
+        return lista
+    else:
+        c = 2
+        while c < 5:
+            dict_temp = {}
+            get_link_pichau(soup, c, dict_temp)
+            get_name_pichau(soup, c, dict_temp)
+            get_price_pichau(soup, c, dict_temp)
+            dict_all[c] = dict_temp
+            c+=1
+        lista.append({"Pichau":dict_all})
+        return lista
+
+def return_message(lista):
+    mensagem = "Essas foram as informações que eu obtive:\n"
     for index in lista:
         for loja, valor in index.items():
             try:
-                mensagem += f"\n\nLoja: {loja}\n"
+                mensagem += f"\nLoja: {loja}\n\n"
                 for chave, value in valor.items():
                     try:
                         mensagem += f"Produto: {value['nome']}\n\n"
@@ -140,20 +166,23 @@ def retorna_mensagem(lista):
                     except:
                         pass
                     try:
-                        mensagem += f"Preço antigo: {value['old price']}\n\n"
-                    except KeyError:
-                        pass
-                    try:
-                        mensagem += f"Preço a vista: {value['avista']}\n\n"
-                    except KeyError:
-                        pass
-                    try:
-                        if value['regular price'] != "Não há estoque desse produto!":
-                            mensagem += f"Preço: {value['regular price']}\n\n"
-                        else:
-                            mensagem += f"{value['regular price']}\n\n"
-                    except KeyError:
-                        mensagem += "Não consegui pegar o preço do produto\n\n"
+                        mensagem += f"Esse produto está {value['esgotado']}\n\n"
+                    except:
+                        try:
+                            mensagem += f"Preço antigo: {value['old price']}\n\n"
+                        except KeyError:
+                            pass
+                        try:
+                            mensagem += f"Preço a vista: {value['avista']}\n\n"
+                        except KeyError:
+                            pass
+                        try:
+                            if value['regular price'] != "Não há estoque desse produto!":
+                                mensagem += f"Preço: {value['regular price']}\n\n"
+                            else:
+                                mensagem += f"{value['regular price']}\n\n"
+                        except KeyError:
+                            mensagem += "Não consegui pegar o preço do produto\n\n"
                     try:
                         mensagem += f"Parcela: {value['parcela']}\n\n"
                     except:
@@ -164,5 +193,13 @@ def retorna_mensagem(lista):
                         mensagem += f"Não consegui pegar o link, desculpe!\n"
                     mensagem += "_" * 50 + "\n"
             except:
-                mensagem += f" {valor}"
+                mensagem += f"{valor}"
     return mensagem
+
+
+def main(product):
+    listaK = search_product_kabum(product)
+    listaKA = search_product_amazon(listaK, product)
+    listaKAP = search_product_pichau(listaKA, product)
+    message = return_message(listaKAP)
+    return message
