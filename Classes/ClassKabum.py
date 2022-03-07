@@ -1,4 +1,4 @@
-from imports import *
+from Libraries.imports import *
 
 class Kabum:
     def __init__(self, product):

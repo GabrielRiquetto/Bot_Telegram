@@ -1,6 +1,6 @@
-from imports import *
-from searchTop30 import searchTop30
-from web import *
+from Libraries.imports import *
+from Web.searchTop30 import searchTop30
+from Web.web import *
 
 apiKey = "5184551074:AAG5MjlyPGGueIfRNjBlQUvVMoRe63j-Jnk"
 

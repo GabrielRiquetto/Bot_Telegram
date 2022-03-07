@@ -1,6 +1,5 @@
-import requests
-from bs4 import BeautifulSoup
-from data import *
+from Libraries.imports import *
+from Web.data import *
 
 def searchTop30(data):
     countPNP = 0

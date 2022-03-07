@@ -1,4 +1,4 @@
-from imports import *
+from Libraries.imports import *
 
 class Pichau:
     def __init__(self, lista, product):

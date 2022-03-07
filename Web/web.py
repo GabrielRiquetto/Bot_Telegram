@@ -1,6 +1,6 @@
-from imports import *
-from ClassPichau import Pichau
-from ClassKabum import Kabum
+from Libraries.imports import *
+from Classes.ClassPichau import Pichau
+from Classes.ClassKabum import Kabum
 
 def search_product_amazon(lista, product):
     lista = lista
