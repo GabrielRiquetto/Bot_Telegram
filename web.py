@@ -1,64 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from Classes import Pichau
-
-def search_product_kabum(product):
-    c = 0
-    product = product.replace(" ", "+")
-    url = f'https://www.kabum.com.br/busca?query={product}'
-
-    site = requests.get(url)
-    soup = BeautifulSoup(site.content, 'html.parser')
-    result = soup.find_all("div", class_="productCard")
-    empty = soup.find("div", id="listingEmpty")
-    if empty == None and site.status_code == 200:
-        all_itens = {}
-        links = {}
-        while c < 3:
-            try:
-                text = str(result[c])
-                link = re.search('(?=href=).*(?="><i)', text).group().replace('href="', "")
-                links[c] = f"https://kabum.com.br{link}"
-                c+=1
-            except IndexError:
-                break
-        i = 0
-        for chave, valor in links.items():
-            while True: 
-                info_dict = {}
-                info_dict['link'] = valor
-                site = requests.get(valor)
-                soup = BeautifulSoup(site.content, 'html.parser')
-                
-                name = soup.find("h1", itemprop="name")    
-                if name != None:
-                    info_dict['nome'] = name.get_text()
-
-                old_price = soup.find("span", class_="oldPrice")
-                if old_price != None:
-                    info_dict["old price"] = old_price.get_text()
-                
-                avista = soup.find("h4", "finalPrice")
-                if avista != None:
-                    info_dict['avista'] = avista.get_text()
-                
-                price = soup.find("b", "regularPrice")
-                if price != None:
-                    info_dict['regular price'] = price.get_text()
-                else:
-                    try:    
-                        info_dict['regular price'] = avista.get_text()
-                    except AttributeError:
-                        info_dict['regular price'] = "Não há estoque desse produto!"
-                all_itens[i] = info_dict
-                i+=1
-                break
-        return [{"Kabum": all_itens}]
-    elif site.status_code != 200:
-        return [{"Kabum":"O site da Kabum está com algum problema.\n\n"}]
-    else:
-        return [{"Kabum":"Não consegui encontrar nada na Kabum =(\n\n"}]
+from Classes import Pichau, Kabum
 
 def search_product_amazon(lista, product):
     lista = lista
@@ -170,7 +113,7 @@ def return_message(lista):
 
 
 def main(product):
-    listaK = search_product_kabum(product)
+    listaK = Kabum(product).search_product_kabum()
     listaKA = search_product_amazon(listaK, product)
     listaKAP = Pichau(listaKA, product).search_product_pichau()
     message = return_message(listaKAP)
