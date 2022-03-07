@@ -1,4 +1,5 @@
 from imports import *
+
 class Pichau:
     def __init__(self, lista, product):
         self.product = str(product).replace(" ", "-")

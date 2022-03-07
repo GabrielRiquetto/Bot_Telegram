@@ -1,4 +1,5 @@
 from imports import *
+
 class Kabum:
     def __init__(self, product):
         self.product = product.replace(" ", "+")
