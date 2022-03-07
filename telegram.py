@@ -1,5 +1,4 @@
-import telebot
-import re
+from imports import *
 from searchTop30 import searchTop30
 from web import *
 

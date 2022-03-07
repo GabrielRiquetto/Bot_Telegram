@@ -1,7 +1,6 @@
-import requests
-from bs4 import BeautifulSoup
-import re
-from Classes import Pichau, Kabum
+from imports import *
+from ClassPichau import Pichau
+from ClassKabum import Kabum
 
 def search_product_amazon(lista, product):
     lista = lista
