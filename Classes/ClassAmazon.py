@@ -1,11 +1,11 @@
-from Libraries.imports import *
+from Important.imports import requests, BeautifulSoup
 
 class Amazon:
     def __init__(self, lista, product):
         self.product = product.replace(" ", "+")
         self.lista = lista
 
-    def isWorking(self):
+    def __is_working(self):
         erro = 0
         url = f'https://www.amazon.com.br/s?k={self.product}'
         while True:
@@ -59,9 +59,9 @@ class Amazon:
         i = 0
         count = 0
         dict_append = {}
-        informations = self.isWorking()
+        informations = self.__is_working()
         if informations != False:
-            while count < 3:
+            while count <= 5:
                 if "R$" in informations[i].get_text():
                     dict_temp = {}
                     texto = str(informations[i].get_text())

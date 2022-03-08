@@ -1,15 +1,16 @@
-from Libraries.imports import *
+from Important.imports import requests, BeautifulSoup, re
 
 class Kabum:
     def __init__(self, product):
         self.product = product.replace(" ", "+")
     
-    def __get_link(self, result, c):
+    def __get_link(self, result):
         links = {}
-        while c < 3:
+        c = 0
+        while c <= 5:
             try:
                 text = str(result[c])
-                link = re.search('(?=href=).*(?="><i)', text).group().replace('href="', "")
+                link = re.search('(?=(href=)).*(?="><i)', text).group().replace('href="', "")
                 links[c] = f"https://kabum.com.br{link}"
                 c+=1
             except IndexError:
@@ -40,7 +41,6 @@ class Kabum:
                 info_dict['regular price'] = "Não há estoque desse produto!"
 
     def search_product_kabum(self):
-        c = 0
         product = self.product
         url = f'https://www.kabum.com.br/busca?query={product}'
 
@@ -50,7 +50,7 @@ class Kabum:
         empty = soup.find("div", id="listingEmpty")
         if empty == None and site.status_code == 200:
             all_itens = {}
-            links = self.__get_link(result=result, c=c)
+            links = self.__get_link(result=result)
             i = 0
             for chave, valor in links.items():
                 while True: 

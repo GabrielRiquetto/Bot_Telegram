@@ -1,4 +1,4 @@
-from Libraries.imports import *
+from Important.imports import requests, BeautifulSoup
 
 class Pichau:
     def __init__(self, lista, product):
@@ -86,7 +86,7 @@ class Pichau:
             return lista
         else:
             c = 2
-            while c < 5:
+            while c <= 7:
                 dict_temp = {}
                 self.__get_link(soup, c, dict_temp)
                 self.__get_name(soup, c, dict_temp)

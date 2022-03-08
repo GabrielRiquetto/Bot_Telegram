@@ -1,13 +1,15 @@
-from Libraries.imports import *
+from Important.imports import *
 from Classes.ClassPichau import Pichau
 from Classes.ClassKabum import Kabum
 from Classes.ClassAmazon import Amazon
 
 def return_message(lista):
+    mensagens = []
     mensagem = "Essas foram as informações que eu obtive:\n"
     for index in lista:
         for loja, valor in index.items():
             try:
+                mensagem = ""
                 mensagem += f"\nLoja: {loja}\n\n"
                 for chave, value in valor.items():
                     try:
@@ -47,8 +49,8 @@ def return_message(lista):
                     mensagem += "_" * 50 + "\n"
             except:
                 mensagem += f"{valor}\n"
-    return mensagem
-
+            mensagens.append(mensagem)
+    return mensagens
 
 def main(product):
     listaK = Kabum(product).search_product_kabum()
