@@ -1,4 +1,4 @@
-from Important.imports import requests, BeautifulSoup
+from Important.imports import requests, BeautifulSoup, bs4
 
 class Amazon:
     def __init__(self, lista, product):
@@ -60,26 +60,29 @@ class Amazon:
         count = 0
         dict_append = {}
         informations = self.__is_working()
-        if informations != False:
-            while count <= 5:
-                if "R$" in informations[i].get_text():
-                    dict_temp = {}
-                    texto = str(informations[i].get_text())
-                    estrelas = texto.find("estrelas")
-                    cifrao = texto.find("R$")
-                    
-                    self.__get_link(i, informations, dict_temp)
-                    self.__get_name(estrelas, texto, dict_temp)
-                    self.__get_price(cifrao, texto, dict_temp)
-                    self.__get_portion(texto, dict_temp)
-                    self.__get_evaluation(texto, estrelas, cifrao, dict_temp)
-                    
-                    dict_append[count] = dict_temp
-                    count+=1
-                i+=1
-            lista.append({"Amazon":dict_append})
+        if type(informations) == bs4.element.ResultSet:
+            try:
+                while count <= 5:
+                    if "R$" in informations[i].get_text():
+                        dict_temp = {}
+                        texto = str(informations[i].get_text())
+                        estrelas = texto.find("estrelas")
+                        cifrao = texto.find("R$")
+                        
+                        self.__get_link(i, informations, dict_temp)
+                        self.__get_name(estrelas, texto, dict_temp)
+                        self.__get_price(cifrao, texto, dict_temp)
+                        self.__get_portion(texto, dict_temp)
+                        self.__get_evaluation(texto, estrelas, cifrao, dict_temp)
+                        
+                        dict_append[count] = dict_temp
+                        count+=1
+                    i+=1
+                lista.append({"Amazon":dict_append})
+            except:
+                lista.append({"Amazon":"Algo aconteceu com a minha busca na Amazon..."})
             return lista
-        elif informations != 200:
+        elif type(informations) == int:
             lista.append({"Amazon":"Amazon está com algum problema..."})
             return lista
         else:

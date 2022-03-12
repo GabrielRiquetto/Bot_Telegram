@@ -1,6 +1,5 @@
 from Important.imports import *
 from Classes.ClassPichau import Pichau
-from Classes.ClassKabum import Kabum
 from Classes.ClassAmazon import Amazon
 
 def return_message(lista):
@@ -53,7 +52,7 @@ def return_message(lista):
     return mensagens
 
 def main(product):
-    listaK = Kabum(product).search_product_kabum()
+    listaK = []
     listaKA = Amazon(listaK, product).search_product_amazon()
     listaKAP = Pichau(listaKA, product).search_product_pichau()
     message = return_message(listaKAP)
